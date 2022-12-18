@@ -27,10 +27,15 @@ export const updatePost = createAsyncThunk(
 export const deletePost = createAsyncThunk(
   "user/deletePost",
   async (deleteId) => {
-    console.log("delete id in thunk", deleteId);
+    // console.log("delete id in thunk", deleteId);
     await api.deletePost(deleteId);
   }
 );
+
+export const likePost = createAsyncThunk("user/likePost", async (Id) => {
+  console.log("like id in thunk", Id);
+  await api.likePost(Id);
+});
 
 export const createPostsSlice = createSlice({
   name: "POSTS",
@@ -48,7 +53,8 @@ export const createPostsSlice = createSlice({
       })
       .addCase(createPost.fulfilled)
       .addCase(updatePost.fulfilled)
-      .addCase(deletePost.fulfilled);
+      .addCase(deletePost.fulfilled)
+      .addCase(likePost.fulfilled);
   },
 });
 

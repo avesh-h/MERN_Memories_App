@@ -13,13 +13,18 @@ export const createPost = async (newpost) => {
 };
 
 export const updatePost = (id, updatedPost) => {
-  console.log("Updateding", updatedPost);
+  // console.log("Updateding", updatedPost);
   axios.patch(`${url}/${id}`, updatedPost);
 };
 
 export const deletePost = (id) => {
-  console.log("Deleting", id);
+  // console.log("Deleting", id);
   axios.delete(`${url}/${id}`);
+};
+
+export const likePost = (id) => {
+  console.log("Liking Id", id);
+  axios.patch(`${url}/${id}/likePost`);
 };
 
 // export const createPost = async (newpost) => {
