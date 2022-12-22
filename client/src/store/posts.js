@@ -9,25 +9,25 @@ export const getAllPosts = createAsyncThunk("user/getPosts", async () => {
 export const createPost = createAsyncThunk(
   "user/createPost",
   async (postData) => {
-    console.log("Form Data", postData);
+    // console.log("Form Data", postData);
 
-    await api.createPost(postData);
+    const singlePost = await api.createPost(postData);
+    return singlePost;
   }
 );
 
 export const updatePost = createAsyncThunk(
   "user/updatePost",
   async (fullData) => {
-    // console.log("Updated Data in thunk", fullData);
     const { id, update } = fullData;
-    await api.updatePost(id, update);
+    const updatedData = await api.updatePost(id, update);
+    return updatedData;
   }
 );
 
 export const deletePost = createAsyncThunk(
   "user/deletePost",
   async (deleteId) => {
-    // console.log("delete id in thunk", deleteId);
     await api.deletePost(deleteId);
   }
 );
@@ -39,16 +39,19 @@ export const likePost = createAsyncThunk("user/likePost", async (Id) => {
 
 export const createPostsSlice = createSlice({
   name: "POSTS",
-  initialState: [],
+  initialState: { getCall: false, posts: [] },
   reducers: {
     // getallPosts() {},
     // createPost() {},
+    getPostsCall(state) {
+      state.getCall = !state.getCall;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getAllPosts.fulfilled, (state, action) => {
-        // state = [...state, ...action.payload];
-        state = action.payload;
+        console.log("main get posts", action.payload);
+        state.posts = action.payload;
         return state;
       })
       .addCase(createPost.fulfilled)

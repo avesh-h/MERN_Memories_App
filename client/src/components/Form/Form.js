@@ -4,6 +4,7 @@ import { Typography, TextField, Paper, Button } from "@material-ui/core";
 import FileBase64 from "react-file-base64";
 import { createPost, updatePost } from "../../store/posts";
 import { useDispatch, useSelector } from "react-redux";
+import { postActions } from "../../store/posts";
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyle();
@@ -17,7 +18,7 @@ const Form = ({ currentId, setCurrentId }) => {
   });
   const EditPost = useSelector((state) => {
     if (currentId) {
-      const findPost = state.post.find((post) => post._id === currentId);
+      const findPost = state.post.posts.find((post) => post._id === currentId);
       return findPost;
     } else {
       return null;
@@ -30,7 +31,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }
   }, [EditPost]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentId) {
       console.log("The Data", postData, currentId);
@@ -38,9 +39,11 @@ const Form = ({ currentId, setCurrentId }) => {
         id: currentId,
         update: postData,
       };
-      dispatch(updatePost(fullData));
+      await dispatch(updatePost(fullData));
+      dispatch(postActions.getPostsCall());
     } else {
-      dispatch(createPost(postData));
+      await dispatch(createPost(postData));
+      dispatch(postActions.getPostsCall());
     }
 
     handleClear();

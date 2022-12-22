@@ -8,18 +8,20 @@ export const fetchPosts = async () => {
 };
 
 export const createPost = async (newpost) => {
-  console.log("Add New Post", newpost);
-  await axios.post(url, newpost);
+  const singleData = await axios.post(url, newpost);
+  return singleData.data;
 };
 
-export const updatePost = (id, updatedPost) => {
+export const updatePost = async (id, updatedPost) => {
   // console.log("Updateding", updatedPost);
-  axios.patch(`${url}/${id}`, updatedPost);
+  const updatedData = await axios.patch(`${url}/${id}`, updatedPost);
+  return updatedData;
 };
 
-export const deletePost = (id) => {
+export const deletePost = async (id) => {
   // console.log("Deleting", id);
-  axios.delete(`${url}/${id}`);
+  const deleteId = await axios.delete(`${url}/${id}`);
+  return deleteId;
 };
 
 export const likePost = (id) => {

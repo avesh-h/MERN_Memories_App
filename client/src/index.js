@@ -4,6 +4,7 @@ import store from "./store/index";
 import App from "./App.js";
 import React from "react";
 import reportWebVitals from "./reportWebVitals";
+// import store from "./store/ConfigStore/index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

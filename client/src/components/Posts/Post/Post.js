@@ -1,7 +1,8 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deletePost, likePost } from "../../../store/posts";
 import useStyle from "./styles";
+import { postActions } from "../../../store/posts";
 import {
   Card,
   CardActions,
@@ -17,11 +18,10 @@ import moment from "moment";
 
 const Post = ({ post, setCurrentId }) => {
   const classes = useStyle();
-  // console.log("Post Props", post);
-
   const dispatch = useDispatch();
-  const handleDelete = (id) => {
-    dispatch(deletePost(id));
+  const handleDelete = async (id) => {
+    await dispatch(deletePost(id));
+    dispatch(postActions.getPostsCall());
   };
   return (
     <Card className={classes.card}>
@@ -64,8 +64,9 @@ const Post = ({ post, setCurrentId }) => {
         <Button
           size="small"
           color="primary"
-          onClick={() => {
-            dispatch(likePost(post._id));
+          onClick={async () => {
+            await dispatch(likePost(post._id));
+            dispatch(postActions.getPostsCall());
           }}
         >
           <ThumbUpAltIcon fontSize="small" />

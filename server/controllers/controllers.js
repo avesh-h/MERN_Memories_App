@@ -22,6 +22,7 @@ export const createPost = async (req, res) => {
   //   .catch((err) => console.log(err.message));
   try {
     const newData = await newPost.save();
+    console.log("Try to create", newData);
     res.status(201).send(newData);
   } catch (error) {
     res.status(404).send(error.message);
@@ -41,7 +42,7 @@ export const updatePost = async (req, res) => {
         new: true, //New True will return th object
       }
     );
-    res.json(updatedPost);
+    res.send(updatedPost);
   }
 };
 
@@ -50,8 +51,8 @@ export const deletePost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(404).send("No Post with that id");
   } else {
-    const deletedPost = await PostMessage.findByIdAndDelete(_id);
-    res.send("Sucessfully Deleted");
+    await PostMessage.findByIdAndDelete(_id);
+    res.send(_id);
   }
 };
 
@@ -68,6 +69,6 @@ export const likePost = async (req, res) => {
       },
       { new: true }
     );
-    res.json(likingPost);
+    res.send(likingPost);
   }
 };

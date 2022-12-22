@@ -4,9 +4,10 @@ import memories from "./images/memories.png";
 import Posts from "./components/Posts/Posts";
 import Form from "./components/Form/Form";
 import useStyle from "./styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "./store/posts";
 import "./index.css";
+import { getPosts } from "./store/actions/postsActions";
 
 // import { postActions } from "./store/posts";
 
@@ -14,10 +15,17 @@ const App = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const [currentId, setCurrentId] = useState(null);
+  const allPosts = useSelector((state) => {
+    return state.post.posts;
+  });
+  const fetchPosts = useSelector((state) => {
+    return state.post.getCall;
+  });
 
   useEffect(() => {
+    // dispatch(getPosts());
     dispatch(getAllPosts());
-  }, [currentId, dispatch]);
+  }, [fetchPosts]);
   return (
     <Container maxWidth="lg">
       <AppBar className={classes.appBar} position="static" color="inherit">
