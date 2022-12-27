@@ -13,7 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("Your Location is----->", location);
+  // console.log("Your Location is----->", location);
   const logoutHandler = () => {
     dispatch(authActions.logout());
     navigate("/auth");

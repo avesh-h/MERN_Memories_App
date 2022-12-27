@@ -18,17 +18,43 @@ import Icon from "./icon";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
 
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 const Auth = () => {
   const classes = useStyle();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [formData, setFormData] = useState(initialState);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSignup) {
+      dispatch(authActions.signup(formData));
+    } else {
+      dispatch(authActions.signin());
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
   const switchMode = () => {
     setIsSignup(!isSignup);
     handleShowPassword(false);
@@ -57,10 +83,12 @@ const Auth = () => {
       console.log(error);
     }
   };
+
   const googleFailure = (error) => {
     console.log(error);
     console.log("User's registration is failed");
   };
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper}>
