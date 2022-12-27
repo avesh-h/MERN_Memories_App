@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useStyle from "./styles";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Avatar,
@@ -11,15 +12,18 @@ import {
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./common/Input";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-// import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
 import Icon from "./icon";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/auth";
 
 const Auth = () => {
   const classes = useStyle();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-  // const isSignup = false;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = () => {};
   const handleChange = () => {};
   const handleShowPassword = () => {
@@ -29,8 +33,29 @@ const Auth = () => {
     setIsSignup(!isSignup);
     handleShowPassword(false);
   };
-  const googleSuccess = async (res) => {
-    console.log(res);
+
+  //GAPI is Necessary to solve the error of (popup closed by user)
+  gapi.load("client:auth2", () => {
+    gapi.client.init({
+      clientId:
+        "276320922714-ls8q6jdh2rbfc8qe3ck81d9a8096q5mm.apps.googleusercontent.com",
+      plugin_name: "chat",
+    });
+  });
+
+  const googleSuccess = (res) => {
+    // console.log("Response", res);
+    const { profileObj, tokenId } = res;
+    const data = {
+      result: profileObj,
+      tokenId,
+    };
+    try {
+      dispatch(authActions.auth(data));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const googleFailure = (error) => {
     console.log(error);
@@ -93,19 +118,20 @@ const Auth = () => {
               {isSignup ? "Sign Up" : "Sign In"}
             </Button>
             <GoogleLogin
-              // render={(renderProps) => (
-              //   <Button
-              //     className={classes.googleButton}
-              //     color="primary"
-              //     fullWidth
-              //     onClick={renderProps.onClick}
-              //     disabled={renderProps.disabled}
-              //     startIcon={<Icon />}
-              //     variant="contained"
-              //   >
-              //     Google Sign In
-              //   </Button>
-              // )}
+              clientId="276320922714-ls8q6jdh2rbfc8qe3ck81d9a8096q5mm.apps.googleusercontent.com"
+              render={(renderProps) => (
+                <Button
+                  className={classes.googleButton}
+                  color="primary"
+                  fullWidth
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                  startIcon={<Icon />}
+                  variant="contained"
+                >
+                  Google Sign In
+                </Button>
+              )}
               onSuccess={googleSuccess}
               onFailure={googleFailure}
             />
