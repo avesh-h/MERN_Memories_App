@@ -58,17 +58,34 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
   const { id } = req.params;
+
+  //Now we can access middleware varible which store the id of user that currently logged in
+  if (!req.userId) {
+    return res.json({ message: "Unauthenticated!" });
+  }
+
+  //then we find the post for like
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send("No Post with that id");
   } else {
     const post = await PostMessage.findById(id);
-    const likingPost = await PostMessage.findByIdAndUpdate(
-      id,
-      {
-        likeCount: post.likeCount + 1,
-      },
-      { new: true }
-    );
+
+    //now we have to check the user id is in the like section or not (each user can only like once and second time when he clicked it's going to be dislike the post)
+
+    const likesIndex = post.likes.findIndex((id) => id === String(req.userId));
+
+    if (likesIndex === -1) {
+      //If the id is not found in likesIndex so for that we add -1
+      //For liking the post (logic of like the post)
+      post.likes.push(req.userId);
+    } else {
+      //FOr dislike the post
+      post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
+
+    const likingPost = await PostMessage.findByIdAndUpdate(id, post, {
+      new: true,
+    });
     res.send(likingPost);
   }
 };

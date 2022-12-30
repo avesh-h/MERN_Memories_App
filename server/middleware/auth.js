@@ -14,7 +14,7 @@ const auth = async (req, res, next) => {
     if (token && isCustomAuth) {
       decodeData = jwt.verify(token, "test");
 
-      //we have to see id from the decodeData and save in another variable because we don't know which user is like the post or delete the post etc.
+      //we have to see id from the decodeData and save in another variable because we don't know which user is like the post or delete the post decodeData id is for the check the induviduality for the each user so we can access this id in next() function.
 
       req.userId = decodeData?.id;
     }

@@ -39,7 +39,7 @@ const Auth = () => {
     if (isSignup) {
       dispatch(authActions.signup(formData));
     } else {
-      dispatch(authActions.signin());
+      dispatch(authActions.signin(formData));
     }
   };
 
@@ -57,7 +57,7 @@ const Auth = () => {
 
   const switchMode = () => {
     setIsSignup(!isSignup);
-    handleShowPassword(false);
+    setShowPassword(false);
   };
 
   //GAPI is Necessary to solve the error of (popup closed by user)

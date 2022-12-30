@@ -50,7 +50,6 @@ export const createPostsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllPosts.fulfilled, (state, action) => {
-        console.log("main get posts", action.payload);
         state.posts = action.payload;
         return state;
       })
