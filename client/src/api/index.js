@@ -31,13 +31,13 @@ export const likePost = (id) => {
   API.patch(`/posts/${id}/likePost`);
 };
 
-export const signIn = async (formData) => {
-  const data = await API.post("/users/signin", formData);
+export const signIn = (formData) => {
+  const data = API.post("/user/signin", formData);
   return data;
 };
 
-export const signUp = async (formData) => {
-  const data = await API.post("/users/signup", formData);
+export const signUp = (formData) => {
+  const data = API.post("/user/signup", formData);
   return data;
 };
 

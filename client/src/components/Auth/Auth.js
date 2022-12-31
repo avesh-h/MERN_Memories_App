@@ -17,6 +17,7 @@ import { gapi } from "gapi-script";
 import Icon from "./icon";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
+import { signin, signup } from "../../store/auth";
 
 const initialState = {
   firstName: "",
@@ -34,12 +35,14 @@ const Auth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignup) {
-      dispatch(authActions.signup(formData));
+      await dispatch(signup(formData));
+      navigate("/");
     } else {
-      dispatch(authActions.signin(formData));
+      await dispatch(signin(formData));
+      navigate("/");
     }
   };
 
@@ -134,6 +137,7 @@ const Auth = () => {
                 name="confirmPassword"
                 handleChange={handleChange}
                 label="Re-type Password"
+                type={"password"}
               />
             )}
             <Button
