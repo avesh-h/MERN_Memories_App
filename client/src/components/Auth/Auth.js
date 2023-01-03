@@ -42,6 +42,7 @@ const Auth = () => {
       navigate("/");
     } else {
       await dispatch(signin(formData));
+      debugger;
       navigate("/");
     }
   };

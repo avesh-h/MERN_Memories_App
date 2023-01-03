@@ -22,14 +22,20 @@ export const signin = createAsyncThunk("auth/signin", async (formData) => {
 
 export const authSlice = createSlice({
   name: "AUTH",
-  initialState: { authData: null },
+  initialState: { authData: null, userExist: false },
   reducers: {
     auth(state, action) {
       localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
-      return { ...state, authData: action.payload };
+      // state.userExist = !state.userExist;
+      return {
+        ...state.authData,
+        authData: action.payload,
+        userExist: !state.userExist,
+      };
     },
-    logout() {
+    logout(state) {
       localStorage.removeItem("profile");
+      state.userExist = !state.userExist;
     },
   },
   extraReducers: (builder) => {
@@ -37,11 +43,13 @@ export const authSlice = createSlice({
       .addCase(signin.fulfilled, (state, action) => {
         state.authData = action.payload;
         localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
+        state.userExist = !state.userExist;
         return state;
       })
       .addCase(signup.fulfilled, (state, action) => {
         state.authData = action.payload;
         localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
+        state.userExist = !state.userExist;
         return state;
       });
   },

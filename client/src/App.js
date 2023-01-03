@@ -6,25 +6,8 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/Home/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-
-// import { postActions } from "./store/posts";
 
 const App = () => {
-  // const classes = useStyle();
-  // const dispatch = useDispatch();
-  // const [currentId, setCurrentId] = useState(null);
-  // const allPosts = useSelector((state) => {
-  //   return state.post.posts;
-  // });
-  // const fetchPosts = useSelector((state) => {
-  //   return state.post.getCall;
-  // });
-
-  // useEffect(() => {
-  //   // dispatch(getPosts());
-  //   dispatch(getAllPosts());
-  // }, [fetchPosts]);
   return (
     <Router>
       <Container maxWidth="lg">

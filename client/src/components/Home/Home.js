@@ -9,17 +9,16 @@ const Home = () => {
   //   const classes = useStyle();
   const dispatch = useDispatch();
   const [currentId, setCurrentId] = useState(null);
-  const allPosts = useSelector((state) => {
-    return state.post.posts;
+  const userExist = useSelector((state) => {
+    return state.auth.userExist;
   });
   const fetchPosts = useSelector((state) => {
     return state.post.getCall;
   });
-
+  // const user = JSON.parse(localStorage.getItem("profile"));
   useEffect(() => {
-    // dispatch(getPosts());
     dispatch(getAllPosts());
-  }, [fetchPosts]);
+  }, [fetchPosts, userExist]);
   return (
     <Grow in>
       <Container>
@@ -28,7 +27,6 @@ const Home = () => {
           justifyContent="space-between"
           alignItems="stretch"
           spacing={3}
-          //   className={classes.mainContainer}
         >
           <Grid item xs={12} sm={7}>
             <Posts setCurrentId={setCurrentId} />

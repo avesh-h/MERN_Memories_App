@@ -9,8 +9,8 @@ import { postActions } from "../../store/posts";
 const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -25,6 +25,10 @@ const Form = ({ currentId, setCurrentId }) => {
     }
   });
 
+  // useEffect(()=>{
+
+  // },[user])
+
   useEffect(() => {
     if (EditPost) {
       setPostData(EditPost);
@@ -34,15 +38,16 @@ const Form = ({ currentId, setCurrentId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentId) {
-      console.log("The Data", postData, currentId);
+      // console.log("The Data", postData, currentId);
       const fullData = {
         id: currentId,
         update: postData,
+        name: user?.result?.name,
       };
       await dispatch(updatePost(fullData));
       dispatch(postActions.getPostsCall());
     } else {
-      await dispatch(createPost(postData));
+      await dispatch(createPost({ ...postData, name: user?.result?.name }));
       dispatch(postActions.getPostsCall());
     }
 
@@ -51,14 +56,29 @@ const Form = ({ currentId, setCurrentId }) => {
   const handleClear = () => {
     setCurrentId(null);
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
       selectedFile: "",
     });
   };
-  return (
+
+  // if (!user?.result?.name) {
+  //   return (
+  //     <Paper className={classes.paper}>
+  //       <Typography variant="h6" align="center">
+  //         Please Sign In to create your own memories and like other's memories.
+  //       </Typography>
+  //     </Paper>
+  //   );
+  // }
+  return !user?.result?.name ? (
+    <Paper className={classes.paper}>
+      <Typography variant="h6" align="center">
+        Please Sign In to create your own memories and like other's memories.
+      </Typography>
+    </Paper>
+  ) : (
     <Paper className={classes.paper}>
       <form
         autoComplete="off"
@@ -69,16 +89,6 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {currentId ? `Editing` : `Creating`} Memory
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) => {
-            setPostData({ ...postData, creator: e.target.value });
-          }}
-        />
         <TextField
           name="title"
           variant="outlined"

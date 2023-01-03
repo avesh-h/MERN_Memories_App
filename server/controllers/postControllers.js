@@ -14,8 +14,12 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
-  console.log("Backend", post);
-  const newPost = new PostMessage(post);
+  // console.log("User create=========>", req.userId);
+  const newPost = new PostMessage({
+    ...post,
+    creator: req.userId,
+    createdAt: new Date().toISOString(),
+  });
   // newPost
   //   .save()
   //   .then(() => res.send("Added"))
@@ -57,23 +61,21 @@ export const deletePost = async (req, res) => {
 };
 
 export const likePost = async (req, res) => {
-  const { id } = req.params;
+  //To check promise for task pending...
+  // return new Promise((resolve, reject) => setTimeout(resolve("done"), 3000));
 
+  const { id } = req.params;
   //Now we can access middleware varible which store the id of user that currently logged in
   if (!req.userId) {
     return res.json({ message: "Unauthenticated!" });
   }
-
   //then we find the post for like
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).send("No Post with that id");
   } else {
     const post = await PostMessage.findById(id);
-
     //now we have to check the user id is in the like section or not (each user can only like once and second time when he clicked it's going to be dislike the post)
-
     const likesIndex = post.likes.findIndex((id) => id === String(req.userId));
-
     if (likesIndex === -1) {
       //If the id is not found in likesIndex so for that we add -1
       //For liking the post (logic of like the post)
@@ -82,7 +84,6 @@ export const likePost = async (req, res) => {
       //FOr dislike the post
       post.likes = post.likes.filter((id) => id !== String(req.userId));
     }
-
     const likingPost = await PostMessage.findByIdAndUpdate(id, post, {
       new: true,
     });
