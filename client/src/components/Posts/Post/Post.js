@@ -18,6 +18,7 @@ import moment from "moment";
 import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 
 const Post = ({ post, setCurrentId }) => {
+  // console.log("This is current user id========>", post.creator);
   const classes = useStyle();
   const dispatch = useDispatch();
   const handleDelete = async (id) => {
@@ -68,15 +69,18 @@ const Post = ({ post, setCurrentId }) => {
         </Typography>
       </div>
       <div className={classes.overlay2}>
-        <Button
-          style={{ color: "white" }}
-          size="small"
-          onClick={() => {
-            setCurrentId(post._id);
-          }}
-        >
-          <MoreHorizIcon fontSize="default" />
-        </Button>
+        {(user?.result?.googleId === post?.creator ||
+          user?.result?._id === post?.creator) && (
+          <Button
+            style={{ color: "white" }}
+            size="small"
+            onClick={() => {
+              setCurrentId(post._id);
+            }}
+          >
+            <MoreHorizIcon fontSize="default" />
+          </Button>
+        )}
       </div>
       <div className={classes.details}>
         <Typography variant="body2" color="textSecondary">
@@ -103,16 +107,19 @@ const Post = ({ post, setCurrentId }) => {
         >
           <Likes />
         </Button>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => {
-            handleDelete(post._id);
-          }}
-        >
-          <DeleteIcon fontSize="small" />
-          &nbsp; Delete
-        </Button>
+        {(user?.result?.googleId === post?.creator ||
+          user?.result?._id === post?.creator) && (
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => {
+              handleDelete(post._id);
+            }}
+          >
+            <DeleteIcon fontSize="small" />
+            &nbsp; Delete
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

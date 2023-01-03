@@ -25,10 +25,6 @@ const Form = ({ currentId, setCurrentId }) => {
     }
   });
 
-  // useEffect(()=>{
-
-  // },[user])
-
   useEffect(() => {
     if (EditPost) {
       setPostData(EditPost);
