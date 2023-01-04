@@ -5,19 +5,32 @@ import { AppBar, Avatar, Button, Typography, Toolbar } from "@material-ui/core";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth";
+import decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const classes = useStyle();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const logoutHandler = () => {
     dispatch(authActions.logout());
+    navigate("/");
+    setUser(null);
   };
   const userExist = useSelector((state) => {
     return state.auth.userExist;
   });
   useEffect(() => {
+    //For check token is expired or not
+    const token = user?.tokenId;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        logoutHandler();
+      }
+    }
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location, userExist]);
   return (

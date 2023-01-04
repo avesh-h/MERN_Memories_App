@@ -34,7 +34,6 @@ const Form = ({ currentId, setCurrentId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (currentId) {
-      // console.log("The Data", postData, currentId);
       const fullData = {
         id: currentId,
         update: postData,
