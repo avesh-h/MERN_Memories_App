@@ -5,6 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@mui/material": "^5.11.3",
+    "@mui/styled-engine-sc": "^5.11.0",
     "@react-oauth/google": "^0.5.1",
     "@reduxjs/toolkit": "^1.9.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -13,6 +16,7 @@
     "axios": "^1.2.1",
     "gapi-script": "^1.2.0",
     "jwt-decode": "^3.1.2",
+    "material-ui-pagination": "^1.1.6",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -25,6 +29,7 @@
     "react-social-login-buttons": "^3.6.1",
     "reactjs-social-login": "^2.6.1",
     "redux": "^4.2.0",
+    "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

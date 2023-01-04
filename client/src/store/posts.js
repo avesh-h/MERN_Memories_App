@@ -33,7 +33,6 @@ export const deletePost = createAsyncThunk(
 );
 
 export const likePost = createAsyncThunk("user/likePost", async (Id) => {
-  console.log("like id in thunk", Id);
   await api.likePost(Id);
 });
 
