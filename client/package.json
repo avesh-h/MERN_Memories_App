@@ -16,6 +16,7 @@
     "axios": "^1.2.1",
     "gapi-script": "^1.2.0",
     "jwt-decode": "^3.1.2",
+    "material-ui-chip-input": "^1.1.0",
     "material-ui-pagination": "^1.1.6",
     "moment": "^2.29.4",
     "react": "^18.2.0",
