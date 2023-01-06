@@ -11,7 +11,7 @@ import {
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPosts } from "../../store/posts";
+import { getAllPosts, getPostsBySearch } from "../../store/posts";
 import Pagination from "../Pagination/Pagination";
 import { useNavigate, useLocation } from "react-router-dom";
 import useStyle from "./styles";
@@ -32,16 +32,38 @@ const Home = () => {
   const page = query.get("page") || 1;
   const searchQuery = query.get("searchQuery");
 
+  const serchPost = () => {
+    if (search.trim() || tags) {
+      //dispatch -> the fetch search post
+      //Array join is actually converts the array into the string
+
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
+
+      //So why this navigate address is matter ? (like example if we want send specific searched post to your friend then we have to add specific navigate(link) for that specific serched post, so thats why client side routing is required)
+      navigate(
+        `/posts/search?searchQuery=${search || "none"}&tags=${
+          tags.join(",") || "none"
+        }`
+      );
+    } else {
+      navigate("/");
+    }
+  };
   const handleKeyPress = (e) => {
     //Search functionality
     if (e.keyCode === 13) {
       //Search the post
+      serchPost();
     }
   };
 
-  const handleAddTags = () => {};
+  const handleAddTags = (tag) => {
+    setTags([...tags, tag]);
+  };
 
-  const handleDeleteTags = () => {};
+  const handleDeleteTags = (tagToDelete) => {
+    setTags(tags.filter((tag) => tag !== tagToDelete));
+  };
 
   const userExist = useSelector((state) => {
     return state.auth.userExist;
@@ -77,7 +99,7 @@ const Home = () => {
                 label="Search Memories"
                 onKeyPress={handleKeyPress}
                 fullWidth
-                value="test"
+                value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
                 }}
@@ -88,7 +110,16 @@ const Home = () => {
                 onDelete={handleDeleteTags}
                 variant="outlined"
                 label="Search Tags"
+                value={tags}
               />
+              <Button
+                className={classes.searchButton}
+                onClick={serchPost}
+                color="primary"
+                variant="contained"
+              >
+                Search
+              </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>

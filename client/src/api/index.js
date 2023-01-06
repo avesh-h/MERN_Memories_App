@@ -17,6 +17,17 @@ export const fetchPosts = async () => {
   return fullArray.data;
 };
 
+//Query parameters are include for search the post
+export const fetchPostsBySearch = async (searchQuery) => {
+  //Query parameters are always begin with "?" we can see below
+  const searchedPosts = await API.get(
+    `/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${
+      searchQuery.tags
+    }`
+  );
+  return searchedPosts;
+};
+
 export const createPost = async (newpost) => {
   const singleData = await API.post("/posts", newpost);
   return singleData.data;

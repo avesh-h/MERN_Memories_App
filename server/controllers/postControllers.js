@@ -12,6 +12,31 @@ export const getPosts = async (req, res) => {
   }
 };
 
+//Search post functionality of backend
+
+//Query in Params both are very different things
+
+//Query --> /posts?page=1  --> (page=1) is our query
+//Params --> /posts/123 --> id= 123 it's our params
+
+export const getPostsBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+  try {
+    //convert query into regular expression
+
+    // i is stands for ignore which means query ignore the case sensitive (test,Test,TEST --> test)
+    const title = new RegExp(searchQuery, "i");
+
+    //$or method is used for like find the one thing from the multiple things in this case is (title and tags)
+    const posts = await PostMessage.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
+    res.json({ data: posts });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 export const createPost = async (req, res) => {
   const post = req.body;
   // console.log("User create=========>", req.userId);
