@@ -57,6 +57,7 @@ export const createPostsSlice = createSlice({
     posts: [],
     currentPage: null,
     numberOfPages: null,
+    isLoading: false,
   },
   reducers: {
     // getallPosts() {},
@@ -67,14 +68,28 @@ export const createPostsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getAllPosts.pending, (state) => {
+        state.isLoading = true;
+        return state;
+      })
       .addCase(getAllPosts.fulfilled, (state, action) => {
         state.posts = action.payload.data;
         state.currentPage = action.payload.currentPage;
         state.numberOfPages = action.payload.numberOfPages;
+        state.isLoading = false;
+        return state;
+      })
+      .addCase(getPostsBySearch.pending, (state) => {
+        state.isLoading = true;
         return state;
       })
       .addCase(getPostsBySearch.fulfilled, (state, action) => {
         state.posts = action.payload;
+        state.isLoading = false;
+        return state;
+      })
+      .addCase(createPost.pending, (state) => {
+        state.isLoading = true;
         return state;
       })
       .addCase(createPost.fulfilled)

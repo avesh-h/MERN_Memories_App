@@ -74,7 +74,7 @@ const Form = ({ currentId, setCurrentId }) => {
       </Typography>
     </Paper>
   ) : (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form
         autoComplete="off"
         noValidate
