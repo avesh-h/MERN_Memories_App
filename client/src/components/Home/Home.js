@@ -71,6 +71,7 @@ const Home = () => {
   const fetchPosts = useSelector((state) => {
     return state.post.getCall;
   });
+
   useEffect(() => {
     dispatch(getAllPosts());
   }, [fetchPosts, userExist]);
@@ -123,7 +124,7 @@ const Home = () => {
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>
-              <Pagination />
+              <Pagination page={page} />
             </Paper>
           </Grid>
         </Grid>

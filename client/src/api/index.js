@@ -12,8 +12,15 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const fetchPosts = async () => {
-  const fullArray = await API.get("/posts");
+//Previous method in which we fetches the all the posts
+// export const fetchPosts = async (page) => {
+//   const fullArray = await API.get("/posts");
+//   return fullArray.data;
+// };
+
+//New method now we fetches the posts for the specific page ,we send page number to the backend.
+export const fetchPosts = async (page) => {
+  const fullArray = await API.get(`/posts?page=${page}`);
   return fullArray.data;
 };
 

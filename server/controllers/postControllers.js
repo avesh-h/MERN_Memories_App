@@ -1,12 +1,40 @@
 import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
 
+//Previous method for fatches the all posts from database
+// export const getPosts = async (req, res) => {
+//   try {
+//     const postMessages = await PostMessage.find();
+//     res.status(200).send(postMessages);
+//   } catch (error) {
+//     res.status(404).send(error.message);
+//   }
+// };
+
+//New mehod for fatches the posts based on page number
 export const getPosts = async (req, res) => {
-  // const postMessages = await PostMessage.find();
-  // PostMessage.find().then((response) => res.send(response));
+  const { page } = req.query;
   try {
-    const postMessages = await PostMessage.find();
-    res.status(200).send(postMessages);
+    //Maximum Numbers of the posts on single page
+    const LIMIT = 8;
+
+    //get index number of the first post on every page
+    const startIndex = (Number(page) - 1) * LIMIT;
+
+    //this total variable count the all the posts that we have based on that we could divided the posts into each page like example 8 posts are for first page and 64 posts are divided into 8 pages
+    const total = await PostMessage.countDocuments({});
+
+    //.limit method fetches the only number of the posts you want in this case is 8
+    //.skip methos fetches the post of that only specific page number like example if we want to go in 3rd page we don't want to fetch the posts of the first two pages..
+    const posts = await PostMessage.find()
+      .sort({ _id: -1 })
+      .limit(LIMIT)
+      .skip(startIndex);
+    res.status(200).send({
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT),
+    });
   } catch (error) {
     res.status(404).send(error.message);
   }

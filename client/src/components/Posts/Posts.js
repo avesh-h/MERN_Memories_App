@@ -10,7 +10,7 @@ const Posts = ({ setCurrentId }) => {
     return state.post.posts;
   });
 
-  return !allPosts.length ? (
+  return !allPosts?.length ? (
     <CircularProgress />
   ) : (
     <Grid

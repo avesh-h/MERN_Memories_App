@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useStyle from "./styles";
-import memories from "../../images/memories.png";
+// import memories from "../../images/memories.png";
 import memoriesLogo from "../../images/memories-Logo.png";
 import memoriesText from "../../images/memories-Text.png";
 import { AppBar, Avatar, Button, Typography, Toolbar } from "@material-ui/core";
