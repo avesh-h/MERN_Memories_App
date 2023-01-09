@@ -72,9 +72,15 @@ const Home = () => {
     return state.post.getCall;
   });
 
+  //we fetch all get post data in all user action like , delete , update etc.
+  // useEffect(() => {
+  //   dispatch(getAllPosts());
+  // }, [fetchPosts, userExist]);
+
   useEffect(() => {
     dispatch(getAllPosts());
-  }, [fetchPosts, userExist]);
+  }, [userExist]);
+
   return (
     <Grow in>
       <Container maxWidth="xl">

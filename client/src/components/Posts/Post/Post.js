@@ -21,9 +21,9 @@ const Post = ({ post, setCurrentId }) => {
   // console.log("This is current user id========>", post.creator);
   const classes = useStyle();
   const dispatch = useDispatch();
-  const handleDelete = async (id) => {
-    await dispatch(deletePost(id));
-    dispatch(postActions.getPostsCall());
+  const handleDelete = (id) => {
+    dispatch(deletePost(id));
+    // dispatch(postActions.getPostsCall());
   };
   const user = JSON.parse(localStorage.getItem("profile"));
 
