@@ -19,6 +19,18 @@ export const getPostsBySearch = createAsyncThunk(
   }
 );
 
+export const getSinglePost = createAsyncThunk(
+  "users/singlePost",
+  async (id) => {
+    try {
+      const { data } = await api.getSinglePost(id);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const createPost = createAsyncThunk(
   "user/createPost",
   async (postData, thunkAPI) => {
@@ -62,6 +74,7 @@ export const createPostsSlice = createSlice({
   name: "POSTS",
   initialState: {
     getCall: false,
+    post: {},
     posts: [],
     currentPage: null,
     numberOfPages: null,
@@ -85,6 +98,15 @@ export const createPostsSlice = createSlice({
         state.currentPage = action.payload.currentPage;
         state.numberOfPages = action.payload.numberOfPages;
         state.isLoading = false;
+        return state;
+      })
+      .addCase(getSinglePost.pending, (state, action) => {
+        state.isLoading = true;
+        return state;
+      })
+      .addCase(getSinglePost.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.post = action.payload;
         return state;
       })
       .addCase(getPostsBySearch.pending, (state) => {

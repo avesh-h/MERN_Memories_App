@@ -35,6 +35,12 @@ export const fetchPostsBySearch = async (searchQuery) => {
   return searchedPosts;
 };
 
+//post detail
+export const getSinglePost = async (id) => {
+  const getPost = await API.get(`/posts/${id}`);
+  return getPost;
+};
+
 export const createPost = async (newpost) => {
   const singleData = await API.post("/posts", newpost);
   return singleData.data;

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import PostMessage from "../models/postMessage.js";
+import { ObjectId } from "mongoose";
 
 //Previous method for fatches the all posts from database
 // export const getPosts = async (req, res) => {
@@ -66,9 +67,19 @@ export const getPostsBySearch = async (req, res) => {
   }
 };
 
+//for Post detail page
+export const getSinglePost = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const singlePost = await PostMessage.findById(id);
+    res.status(200).send(singlePost);
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+};
+
 export const createPost = async (req, res) => {
   const post = req.body;
-  // console.log("User create=========>", req.userId);
   const newPost = new PostMessage({
     ...post,
     creator: req.userId,
