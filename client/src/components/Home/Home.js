@@ -72,7 +72,7 @@ const Home = () => {
     return state.post.getCall;
   });
 
-  //we fetch all get post data in all user action like , delete , update etc.
+  //we fetch all get post data in all user action like , delete , update etc (its's wrong).
   // useEffect(() => {
   //   dispatch(getAllPosts());
   // }, [fetchPosts, userExist]);
@@ -129,9 +129,11 @@ const Home = () => {
               </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
-            <Paper elevation={6} className={classes.pagination}>
-              {!searchQuery && !tags.length && <Pagination page={page} />}
-            </Paper>
+            {!searchQuery && !tags.length && (
+              <Paper elevation={6} className={classes.pagination}>
+                <Pagination page={page} />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>

@@ -40,10 +40,10 @@ const Form = ({ currentId, setCurrentId }) => {
         name: user?.result?.name,
       };
       await dispatch(updatePost(fullData));
-      dispatch(postActions.getPostsCall());
+      // dispatch(postActions.getPostsCall());
     } else {
       await dispatch(createPost({ ...postData, name: user?.result?.name }));
-      dispatch(postActions.getPostsCall());
+      // dispatch(postActions.getPostsCall());
     }
 
     handleClear();
