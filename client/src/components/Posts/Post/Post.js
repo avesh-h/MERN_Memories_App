@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, likePost } from "../../../store/posts";
 import useStyle from "./styles";
-import { postActions } from "../../../store/posts";
 import {
   Card,
   CardActions,
@@ -24,29 +23,40 @@ const Post = ({ post, setCurrentId }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("profile"));
+  //to make our likes functionality faster
+  const [likes, setLikes] = useState(post?.likes);
+  const userLikedId = user?.result?.googleId || user?.result?._id;
+  const hasLiked = likes.find((like) => like === userLikedId);
+  const handleLike = () => {
+    dispatch(likePost(post._id));
+    if (hasLiked) {
+      setLikes(likes.filter((id) => id !== userLikedId));
+    } else {
+      setLikes([...likes, userLikedId]);
+    }
+  };
+
   const handleDelete = (id) => {
     dispatch(deletePost(id));
-    // dispatch(postActions.getPostsCall());
   };
-  const user = JSON.parse(localStorage.getItem("profile"));
 
   //Likes count frontend logic is here
   const Likes = () => {
-    if (post?.likes?.length > 0) {
-      return post.likes.find(
-        (like) => like === (user?.result?.googleId || user?.result?._id)
-      ) ? (
+    if (likes.length > 0) {
+      return likes.find((like) => like === userLikedId) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length - 1} others`
+            : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -108,9 +118,7 @@ const Post = ({ post, setCurrentId }) => {
           size="small"
           color="primary"
           disabled={!user?.result}
-          onClick={async () => {
-            dispatch(likePost(post._id));
-          }}
+          onClick={handleLike}
         >
           <Likes />
         </Button>
