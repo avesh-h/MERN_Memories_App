@@ -71,7 +71,12 @@ export const likePost = createAsyncThunk(
 export const commentPost = createAsyncThunk(
   "user/commentPost",
   async ({ finalComment, id }) => {
-    const comment = await api.commentPost(finalComment, id);
+    try {
+      const comment = await api.commentPost(finalComment, id);
+      return comment.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 );
 
@@ -123,10 +128,6 @@ export const createPostsSlice = createSlice({
         state.isLoading = false;
         return state;
       })
-      // .addCase(createPost.pending, (state) => {
-      //   state.isLoading = true;
-      //   return state;
-      // })
       .addCase(createPost.fulfilled, (state, action) => {
         state.posts = [...state.posts, action.payload];
         return state;
@@ -148,6 +149,19 @@ export const createPostsSlice = createSlice({
           post._id === action.payload.data._id ? action.payload.data : post
         );
         state.posts = likedState;
+        return state;
+      })
+      .addCase(commentPost.fulfilled, (state, action) => {
+        const commentState = state.posts.map((post) => {
+          if (post._id === action.payload._id) {
+            //Change the post that just received the comment...
+            return action.payload;
+          } else {
+            //or return the posts normally
+            return post;
+          }
+        });
+        state.posts = commentState;
         return state;
       });
   },

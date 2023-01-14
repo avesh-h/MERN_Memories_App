@@ -156,3 +156,23 @@ export const likePost = async (req, res) => {
     res.send(likingPost);
   }
 };
+
+export const commentPost = async (req, res) => {
+  // console.log("body==>", req.body);
+  // console.log("Param=>", req.params.id);
+  const { id } = req.params;
+  const { finalComment } = req.body;
+
+  //First we find the post from data base
+  const post = await PostMessage.findById(id);
+
+  //push the commment inside comments array
+  post.comments.push(finalComment);
+
+  //then update the whole post
+  const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+    new: true,
+  });
+
+  res.json(updatedPost);
+};
