@@ -5,9 +5,11 @@ import FileBase64 from "react-file-base64";
 import { createPost, updatePost } from "../../store/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { postActions } from "../../store/posts";
+import { useNavigate } from "react-router-dom";
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyle();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const [postData, setPostData] = useState({
@@ -31,7 +33,7 @@ const Form = ({ currentId, setCurrentId }) => {
     }
   }, [EditPost]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (currentId) {
       const fullData = {
@@ -39,10 +41,12 @@ const Form = ({ currentId, setCurrentId }) => {
         update: postData,
         name: user?.result?.name,
       };
-      await dispatch(updatePost(fullData));
+      dispatch(updatePost(fullData));
+
       // dispatch(postActions.getPostsCall());
     } else {
-      await dispatch(createPost({ ...postData, name: user?.result?.name }));
+      dispatch(createPost({ ...postData, name: user?.result?.name }));
+
       // dispatch(postActions.getPostsCall());
     }
 

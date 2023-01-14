@@ -34,10 +34,8 @@ export const getSinglePost = createAsyncThunk(
 export const createPost = createAsyncThunk(
   "user/createPost",
   async (postData, thunkAPI) => {
-    // console.log("Form Data", postData);
-
     const singlePost = await api.createPost(postData);
-    // console.log("creating=============>", singlePost);
+
     return singlePost;
   }
 );
