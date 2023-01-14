@@ -42,12 +42,8 @@ const Form = ({ currentId, setCurrentId }) => {
         name: user?.result?.name,
       };
       dispatch(updatePost(fullData));
-
-      // dispatch(postActions.getPostsCall());
     } else {
       dispatch(createPost({ ...postData, name: user?.result?.name }));
-
-      // dispatch(postActions.getPostsCall());
     }
 
     handleClear();
@@ -122,7 +118,7 @@ const Form = ({ currentId, setCurrentId }) => {
           <FileBase64
             type="file"
             multiple={false}
-            onDone={(base64) =>
+            onDone={({ base64 }) =>
               setPostData({ ...postData, selectedFile: base64 })
             }
           />

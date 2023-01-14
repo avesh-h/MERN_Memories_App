@@ -91,7 +91,6 @@ export const createPost = async (req, res) => {
   //   .catch((err) => console.log(err.message));
   try {
     const newData = await newPost.save();
-    // console.log("Try to create", newData);
     res.status(201).send(newData);
   } catch (error) {
     res.status(404).send(error.message);

@@ -28,4 +28,4 @@ mongoose
   )
   .catch((err) => console.log(err.message));
 
-// mongoose.set("strictQuery", true);
+// mongoose.set("strictQuery", false);

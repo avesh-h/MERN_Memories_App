@@ -22,6 +22,8 @@ const PostDetails = () => {
     return state.post;
   });
 
+  console.log("Post=========>", post);
+
   useEffect(() => {
     dispatch(getSinglePost(id));
   }, [id]);
