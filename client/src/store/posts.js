@@ -68,6 +68,13 @@ export const likePost = createAsyncThunk(
   }
 );
 
+export const commentPost = createAsyncThunk(
+  "user/commentPost",
+  async ({ finalComment, id }) => {
+    const comment = await api.commentPost(finalComment, id);
+  }
+);
+
 export const createPostsSlice = createSlice({
   name: "POSTS",
   initialState: {

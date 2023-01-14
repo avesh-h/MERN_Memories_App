@@ -64,6 +64,14 @@ export const likePost = async (id) => {
   return likePost;
 };
 
+export const commentPost = async (finalComment, id) => {
+  const commentPost = await API.post(`/posts/${id}/commentPost`, {
+    finalComment,
+    id,
+  });
+  return commentPost;
+};
+
 export const signIn = (formData) => {
   const data = API.post("/user/signin", formData);
   return data;
