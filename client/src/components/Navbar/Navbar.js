@@ -3,6 +3,7 @@ import useStyle from "./styles";
 // import memories from "../../images/memories.png";
 import memoriesLogo from "../../images/memories-Logo.png";
 import memoriesText from "../../images/memories-Text.png";
+import Revibes from "../../images/Re-Vibes.png";
 import { AppBar, Avatar, Button, Typography, Toolbar } from "@material-ui/core";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

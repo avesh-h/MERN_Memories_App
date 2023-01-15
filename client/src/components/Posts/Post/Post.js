@@ -73,32 +73,32 @@ const Post = ({ post, setCurrentId }) => {
   };
   return (
     <Card className={classes.card} raised elevation={6}>
+      <CardMedia
+        className={classes.media}
+        image={post.selectedFile}
+        title={post.title}
+      />
+      <div className={classes.overlay}>
+        <Typography variant="h6">{post.name}</Typography>
+        <Typography variant="body2">
+          {moment(post.createdAt).fromNow()}
+        </Typography>
+      </div>
+      <div className={classes.overlay2}>
+        {(user?.result?.googleId === post?.creator ||
+          user?.result?._id === post?.creator) && (
+          <Button
+            style={{ color: "white" }}
+            size="small"
+            onClick={() => {
+              setCurrentId(post._id);
+            }}
+          >
+            <MoreHorizIcon fontSize="default" />
+          </Button>
+        )}
+      </div>
       <ButtonBase onClick={openPost} className={classes.cardAction}>
-        <CardMedia
-          className={classes.media}
-          image={post.selectedFile}
-          title={post.title}
-        />
-        <div className={classes.overlay}>
-          <Typography variant="h6">{post.name}</Typography>
-          <Typography variant="body2">
-            {moment(post.createdAt).fromNow()}
-          </Typography>
-        </div>
-        <div className={classes.overlay2}>
-          {(user?.result?.googleId === post?.creator ||
-            user?.result?._id === post?.creator) && (
-            <Button
-              style={{ color: "white" }}
-              size="small"
-              onClick={() => {
-                setCurrentId(post._id);
-              }}
-            >
-              <MoreHorizIcon fontSize="default" />
-            </Button>
-          )}
-        </div>
         <div className={classes.details}>
           <Typography variant="body2" color="textSecondary">
             {post.tags.map((tag) => `#${tag} `)}

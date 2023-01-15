@@ -114,7 +114,7 @@ const Form = ({ currentId, setCurrentId }) => {
             setPostData({ ...postData, tags: e.target.value.split(",") });
           }}
         />
-        <div>
+        <div style={{ minWidth: "100px" }}>
           <FileBase64
             type="file"
             multiple={false}
