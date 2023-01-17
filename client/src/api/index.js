@@ -2,7 +2,7 @@ import axios from "axios";
 
 //for Live project
 const API = axios.create({
-  baseURL: "http://mern-memories-app-api.vercel.app",
+  baseURL: "https://mern-memories-app-9dwwg8pja-avesh-h.vercel.app",
 });
 
 //For production
