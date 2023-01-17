@@ -1,6 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8000" });
+//for Live project
+const API = axios.create({
+  baseURL: "http://mern-memories-app-api.vercel.app",
+});
+
+//For production
+// const API = axios.create({ baseURL: "http://localhost:8000" });
 
 //to check the token of user is present in localstorage or not and this interceptors callback is going to excuted before sending the request to the backend and set token to the request header so in backend middleware function can check the user is authorized or not
 API.interceptors.request.use((req) => {
