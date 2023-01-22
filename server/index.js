@@ -8,8 +8,18 @@ import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
-app.use(cors());
-// app.use(express.json());
+//for live
+const corsOptions = {
+  origin: "https://mern-memories-agqj1kkmc-avesh-h.vercel.app",
+  optionsSuccessStatus: 200,
+};
+
+//for live
+app.use(cors(corsOptions));
+
+//for local
+// app.use(cors());
+
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use("/posts", postRoutes);
