@@ -151,7 +151,6 @@ export const likePost = async (req, res) => {
     const likingPost = await PostMessage.findByIdAndUpdate(id, post, {
       new: true,
     });
-    // console.log("===========>Liking post", likingPost);
     res.send(likingPost);
   }
 };

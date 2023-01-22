@@ -12,9 +12,11 @@ const API = axios.create({
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
     req.headers.Authorization = `Bearer ${
-      JSON.parse(localStorage.getItem("profile")).tokenId
+      JSON.parse(localStorage.getItem("profile")).tokenId ||
+      JSON.parse(localStorage.getItem("profile")).token
     }`;
   }
+
   return req;
 });
 

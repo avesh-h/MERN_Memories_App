@@ -35,14 +35,13 @@ const Auth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignup) {
-      await dispatch(signup(formData));
+      dispatch(signup(formData));
       navigate("/");
     } else {
-      await dispatch(signin(formData));
-      debugger;
+      dispatch(signin(formData));
       navigate("/");
     }
   };

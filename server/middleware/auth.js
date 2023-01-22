@@ -1,20 +1,18 @@
 import jwt from "jsonwebtoken";
 
+// const secret_key = "test";
 //This middleware function is use for check user has valid token or not and this middleware apply on both custom token and also google token
 
 //if token length is less than 500 then it means it custom generated token and if length is more than 500 then it's google token
 
 const auth = async (req, res, next) => {
   try {
-    console.log("headers===>", req.headers);
     const token = req.headers.authorization.split(" ")[1];
     const isCustomAuth = token.length < 500;
-
     let decodeData;
     //For custom token
     if (token && isCustomAuth) {
       decodeData = jwt.verify(token, "test");
-
       //we have to see id from the decodeData and save in another variable because we don't know which user is like the post or delete the post decodeData id is for the check the induviduality for the each user so we can access this id in next() function.
 
       req.userId = decodeData?.id;
