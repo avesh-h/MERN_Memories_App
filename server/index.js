@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import postRoutes from "./routes/postRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-
 import allowCors from "./allowCors.js";
 
 const app = express();
