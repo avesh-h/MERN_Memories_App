@@ -15,7 +15,7 @@ const corsOptions = {
 };
 
 //for live
-app.use(cors(corsOptions));
+app.use(cors(corsOptions.origin));
 
 //for local
 // app.use(cors());
