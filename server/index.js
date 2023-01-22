@@ -6,16 +6,18 @@ import bodyParser from "body-parser";
 import postRoutes from "./routes/postRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
+import allowCors from "./allowCors.js";
+
 const app = express();
 
 //for live
-const corsOptions = {
-  origin: "https://mern-memories-agqj1kkmc-avesh-h.vercel.app",
-  optionsSuccessStatus: 200,
-};
+// const corsOptions = {
+//   origin: "https://mern-memories-agqj1kkmc-avesh-h.vercel.app",
+//   optionsSuccessStatus: 200,
+// };
 
 //for live
-app.use(cors(corsOptions.origin));
+app.use(cors(allowCors));
 
 //for local
 // app.use(cors());
