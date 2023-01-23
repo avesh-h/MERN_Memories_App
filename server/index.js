@@ -10,13 +10,13 @@ import allowCors from "./allowCors.js";
 const app = express();
 
 //for live
-// const corsOptions = {
-//   origin: "https://mern-memories-agqj1kkmc-avesh-h.vercel.app",
-//   optionsSuccessStatus: 200,
-// };
+const corsOptions = {
+  origin: "https://mern-memories-app-api.vercel.app",
+  optionsSuccessStatus: 200,
+};
 
 //for live
-app.use(cors());
+app.use(cors(corsOptions));
 // app.use((req, res, next) => {
 //   res.header("Access-Control-Allow-Credentials", true);
 //   res.header(
