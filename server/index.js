@@ -11,7 +11,7 @@ const app = express();
 
 //for live
 const corsOptions = {
-  origin: "https://mern-memories-app-api.vercel.app",
+  origin: "https://mern-memories-app-xi.vercel.app",
   optionsSuccessStatus: 200,
 };
 
