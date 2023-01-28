@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container } from "@material-ui/core";
 import "./index.css";
 import Navbar from "./components/Navbar/Navbar";
@@ -27,7 +27,7 @@ const App = () => {
           <Route path="/posts/:id" element={<PostDetails />} />
           <Route
             path="/auth"
-            element={!user ? <Auth /> : <Navigate to="/posts" />}
+            element={user ? <Navigate to="/posts" /> : <Auth />}
           />
         </Routes>
       </Container>

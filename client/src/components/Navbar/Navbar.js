@@ -27,7 +27,7 @@ const Navbar = () => {
   });
   useEffect(() => {
     //For check token is expired or not
-    const token = user?.tokenId;
+    const token = user?.tokenId || user?.token;
     if (token) {
       const decodedToken = decode(token);
       if (decodedToken.exp * 1000 < new Date().getTime()) {

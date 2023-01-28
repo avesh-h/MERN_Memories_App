@@ -42,9 +42,16 @@ export const authSlice = createSlice({
     builder
       .addCase(signin.fulfilled, (state, action) => {
         state.authData = action.payload;
-        localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
-        state.userExist = !state.userExist;
-        return state;
+        if (action.payload !== undefined) {
+          localStorage.setItem(
+            "profile",
+            JSON.stringify({ ...action?.payload })
+          );
+          state.userExist = !state.userExist;
+          return state;
+        } else {
+          return state;
+        }
       })
       .addCase(signup.fulfilled, (state, action) => {
         state.authData = action.payload;

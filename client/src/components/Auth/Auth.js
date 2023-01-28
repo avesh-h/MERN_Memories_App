@@ -18,6 +18,8 @@ import Icon from "./icon";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
 import { signin, signup } from "../../store/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const initialState = {
   firstName: "",
@@ -34,15 +36,20 @@ const Auth = () => {
   const [formData, setFormData] = useState(initialState);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignup) {
-      dispatch(signup(formData));
+      await dispatch(signup(formData));
       navigate("/");
     } else {
-      dispatch(signin(formData));
-      navigate("/");
+      const data = await dispatch(signin(formData));
+      if (data.payload !== undefined) {
+        navigate("/");
+      } else {
+        toast.error("Invalid Credentials!", { position: "top-center" });
+      }
     }
   };
 
@@ -94,6 +101,7 @@ const Auth = () => {
 
   return (
     <Container component="main" maxWidth="xs">
+      <ToastContainer />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
