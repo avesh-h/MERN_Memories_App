@@ -41,8 +41,13 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignup) {
-      await dispatch(signup(formData));
-      navigate("/");
+      const data = await dispatch(signup(formData));
+      console.log("SIgnup data", data);
+      if (typeof data.payload === "string") {
+        toast.error(data.payload, { position: "top-center" });
+      } else {
+        navigate("/");
+      }
     } else {
       const data = await dispatch(signin(formData));
       if (data.payload !== undefined) {
