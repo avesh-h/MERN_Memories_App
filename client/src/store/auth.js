@@ -7,7 +7,6 @@ export const signup = createAsyncThunk("auth/signup", async (formData) => {
     const { data } = await api.signUp(formData);
     return data;
   } catch (error) {
-    console.log(error.response.data.message);
     return error.response.data.message;
   }
 });
@@ -27,7 +26,6 @@ export const authSlice = createSlice({
   reducers: {
     auth(state, action) {
       localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
-      // state.userExist = !state.userExist;
       return {
         ...state.authData,
         authData: action.payload,
@@ -56,7 +54,6 @@ export const authSlice = createSlice({
       })
       .addCase(signup.fulfilled, (state, action) => {
         state.authData = action.payload;
-        console.log("ISIT PAtyload======>", state.authData);
         if (
           action.payload !== undefined &&
           typeof action.payload !== "string"
