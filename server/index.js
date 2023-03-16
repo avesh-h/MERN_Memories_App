@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import postRoutes from "./routes/postRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 import allowCors from "./allowCors.js";
 
 const app = express();
@@ -41,6 +42,8 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
+
+app.use("/chat", chatRoutes);
 // app.listen(5000);
 
 dotenv.config();

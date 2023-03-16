@@ -9,7 +9,7 @@
 //ref:"User"
 //It means reference like which model is reference to like in this case it's reference to the usersModel
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const chatModel = mongoose.Schema(
   {
@@ -24,4 +24,4 @@ const chatModel = mongoose.Schema(
 
 const Chat = mongoose.model("Chat", chatModel);
 
-module.exports = Chat;
+export default Chat;
