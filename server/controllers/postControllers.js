@@ -26,7 +26,7 @@ export const getPosts = async (req, res) => {
     const total = await PostMessage.countDocuments({});
 
     //.limit method fetches the only number of the posts you want in this case is 8
-    //.skip methos fetches the post of that only specific page number like example if we want to go in 3rd page we don't want to fetch the posts of the first two pages..
+    //.skip method fetches the post of that only specific page number like example if we want to go in 3rd page we don't want to fetch the posts of the first two pages..
     const posts = await PostMessage.find()
       .sort({ _id: -1 })
       .limit(LIMIT)
