@@ -11,25 +11,30 @@ import {
 } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
+import ChatPage from "./components/Chat/ChatPage";
+import { ChatProvider } from "./Context/ChatProvider";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("profile"));
   return (
     <Router>
       <Container maxWidth="lg">
-        <Navbar />
-        <Routes>
-          {/* if we entered in path like "/" then it immediatly forward to the
+        <ChatProvider>
+          <Navbar />
+          <Routes>
+            {/* if we entered in path like "/" then it immediatly forward to the
           '/posts' */}
-          <Route path="/" element={<Navigate to="/posts" />} />
-          <Route path="/posts" element={<Home />} />
-          <Route path="/posts/search" element={<Home />} />
-          <Route path="/posts/:id" element={<PostDetails />} />
-          <Route
-            path="/auth"
-            element={user ? <Navigate to="/posts" /> : <Auth />}
-          />
-        </Routes>
+            <Route path="/" element={<Navigate to="/posts" />} />
+            <Route path="/posts" element={<Home />} />
+            <Route path="/posts/search" element={<Home />} />
+            <Route path="/posts/:id" element={<PostDetails />} />
+            <Route
+              path="/auth"
+              element={user ? <Navigate to="/posts" /> : <Auth />}
+            />
+            <Route path="/posts/chats" element={<ChatPage />} />
+          </Routes>
+        </ChatProvider>
       </Container>
     </Router>
   );

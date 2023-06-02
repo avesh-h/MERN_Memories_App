@@ -5,11 +5,12 @@ import App from "./App.js";
 import React from "react";
 import reportWebVitals from "./reportWebVitals";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ChatProvider } from "./Context/ChatProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <App />
+      <App />
   </Provider>
 );
 

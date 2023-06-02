@@ -5,11 +5,11 @@ import memoriesLogo from "../../images/memories-Logo.png";
 import memoriesText from "../../images/memories-Text.png";
 import Revibes from "../../images/Re-Vibes.png";
 import { AppBar, Avatar, Button, Typography, Toolbar } from "@material-ui/core";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth";
 import decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import ChatIcon from "@mui/icons-material/Chat";
 
 const Navbar = () => {
   const classes = useStyle();
@@ -50,6 +50,23 @@ const Navbar = () => {
       <Toolbar className={classes.toolbar}>
         {user ? (
           <div className={classes.profile}>
+            <button
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "auto",
+                fontSize: "16px",
+                background: "skyblue",
+                border: "none",
+                padding: "7px 7px",
+                borderRadius: "3px",
+                cursor: "pointer",
+              }}
+              onClick={() => navigate("/posts/chats")}
+            >
+              <ChatIcon />
+            </button>
             <Avatar
               className={classes.purple}
               alt={user?.result?.name}
