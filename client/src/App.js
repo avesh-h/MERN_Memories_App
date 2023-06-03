@@ -8,35 +8,45 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
 import ChatPage from "./components/Chat/ChatPage";
-import { ChatProvider } from "./Context/ChatProvider";
+import { ChatProvider, ChatState } from "./Context/ChatProvider";
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem("profile"));
+  // const user = JSON.parse(localStorage.getItem("profile")) ;
+  const { user } = ChatState();
+  console.log("user", user);
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem("profile"));
+  //   console.log("user", user);
+  // }, [window.location.href]);
   return (
-    <Router>
-      <Container maxWidth="lg">
-        <ChatProvider>
-          <Navbar />
-          <Routes>
-            {/* if we entered in path like "/" then it immediatly forward to the
+    // <Router>
+    <Container maxWidth="lg">
+      {/* <ChatProvider> */}
+      <Navbar />
+      <Routes>
+        {/* if we entered in path like "/" then it immediatly forward to the
           '/posts' */}
-            <Route path="/" element={<Navigate to="/posts" />} />
-            <Route path="/posts" element={<Home />} />
-            <Route path="/posts/search" element={<Home />} />
-            <Route path="/posts/:id" element={<PostDetails />} />
-            <Route
-              path="/auth"
-              element={user ? <Navigate to="/posts" /> : <Auth />}
-            />
-            <Route path="/posts/chats" element={<ChatPage />} />
-          </Routes>
-        </ChatProvider>
-      </Container>
-    </Router>
+        <Route path="/" element={<Navigate to="/posts" />} />
+        <Route path="/posts" element={<Home />} />
+        <Route path="/posts/search" element={<Home />} />
+        <Route path="/posts/:id" element={<PostDetails />} />
+        <Route
+          path="/auth"
+          element={user ? <Navigate to="/posts" /> : <Auth />}
+        />
+        <Route
+          path="/posts/chats"
+          element={user ? <ChatPage /> : <Navigate to="/posts" />}
+        />
+      </Routes>
+      {/* </ChatProvider> */}
+    </Container>
+    // </Router>
   );
 };
 

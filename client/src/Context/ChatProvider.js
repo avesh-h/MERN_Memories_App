@@ -11,7 +11,7 @@ export const ChatProvider = ({ children }) => {
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("profile"));
     setUser(userInfo);
-    if (!userInfo) navigate("/posts");
+    // if (!userInfo) navigate("/posts");
   }, [location]);
   return (
     <ChatContext.Provider value={{ user, setUser }}>
