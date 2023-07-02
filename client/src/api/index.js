@@ -10,6 +10,8 @@ const API = axios.create({
 // });
 
 //to check the token of user is present in localstorage or not and this interceptors callback is going to excuted before sending the request to the backend and set token to the request header so in backend middleware function can check the user is authorized or not
+
+//set token in headers for authorization
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
     req.headers.Authorization = `Bearer ${
@@ -89,3 +91,15 @@ export const signUp = (formData) => {
 };
 
 //Need to implement real chat feature
+
+//get searched User
+
+export const searchUser = async (search) => {
+  const data = await API.get(`/chat/users?search=${search}`);
+  return data;
+};
+
+export const createChat = async (userId) => {
+  const data = await API.post("/chat", { userId });
+  return data;
+};
