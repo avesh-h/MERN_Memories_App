@@ -6,7 +6,7 @@ const API = axios.create({
 });
 
 // const API = axios.create({
-//   baseURL: "http://localhost:8000",
+//   baseURL: "https://mern-memories-app-api.vercel.app",
 // });
 
 //to check the token of user is present in localstorage or not and this interceptors callback is going to excuted before sending the request to the backend and set token to the request header so in backend middleware function can check the user is authorized or not
@@ -101,5 +101,10 @@ export const searchUser = async (search) => {
 
 export const createChat = async (userId) => {
   const data = await API.post("/chat", { userId });
+  return data;
+};
+
+export const fetchChats = async () => {
+  const data = await API.get(`/chat`);
   return data;
 };

@@ -18,6 +18,7 @@ import axios from "axios";
 import ChatLoading from "../Chat/ChatLoading";
 import { searchUser, createChat } from "../../api/index";
 import UserListItem from "../UserAvatar/UserListItem";
+import { CircularProgress } from "@mui/material";
 
 export default function TemporaryDrawer() {
   const [search, setSearch] = React.useState("");
@@ -40,7 +41,7 @@ export default function TemporaryDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
-  const closeDrawer = () => toggleDrawer("left", false);
+  // const closeDrawer = () => toggleDrawer("left", false);
 
   const handleSearch = async (e) => {
     if (!search) {
@@ -81,8 +82,19 @@ export default function TemporaryDrawer() {
       const { data } = await createChat(userId);
       setSelectedChat(data);
       setLoadingChat(false);
-      closeDrawer();
-    } catch (error) {}
+      toggleDrawer("left", false);
+    } catch (error) {
+      toast.error(error.message, {
+        position: "top-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const list = (anchor) => (
@@ -133,6 +145,7 @@ export default function TemporaryDrawer() {
               />
             ))
           )}
+          {loadingChat && <CircularProgress />}
         </Box>
       </Box>
       {/* <List>
