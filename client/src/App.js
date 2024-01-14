@@ -18,7 +18,6 @@ import { ChatProvider, ChatState } from "./Context/ChatProvider";
 const App = () => {
   // const user = JSON.parse(localStorage.getItem("profile")) ;
   const { user } = ChatState();
-  console.log("user", user);
   // useEffect(() => {
   //   const user = JSON.parse(localStorage.getItem("profile"));
   //   console.log("user", user);

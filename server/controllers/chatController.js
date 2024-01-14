@@ -21,7 +21,6 @@ export const getAllUsers = asyncHandler(async (req, res) => {
 //For all Chat related controller
 export const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body;
-  console.log("req body", userId);
   if (!userId) {
     console.log("User Id param is not send with request");
     res.sendStatus(400);

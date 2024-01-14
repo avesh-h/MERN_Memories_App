@@ -42,7 +42,6 @@ const Auth = () => {
     e.preventDefault();
     if (isSignup) {
       const data = await dispatch(signup(formData));
-      console.log("SIgnup data", data);
       if (typeof data.payload === "string") {
         toast.error(data.payload, { position: "top-center" });
       } else {
@@ -101,7 +100,7 @@ const Auth = () => {
 
   const googleFailure = (error) => {
     console.log(error);
-    console.log("User's registration is failed");
+    console.error("User's registration is failed");
   };
 
   return (

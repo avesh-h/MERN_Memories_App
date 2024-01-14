@@ -4,7 +4,6 @@ import User from "../models/users.js";
 import Chat from "../models/chatModel.js";
 
 export const sendMessage = asyncHandler(async (req, res) => {
-  console.log("local 8---");
   const { content, chatId } = req.body;
 
   if (!content || !chatId) {
