@@ -7,7 +7,6 @@ import SideDrawer from "../miscellaneous/SideDrawer";
 
 const ChatPage = () => {
   const { user } = ChatState();
-  console.log("user", user);
   return (
     <div style={{ width: "100%" }}>
       {user && <SideDrawer />}

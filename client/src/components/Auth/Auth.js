@@ -40,6 +40,7 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //Signup
     if (isSignup) {
       const data = await dispatch(signup(formData));
       if (typeof data.payload === "string") {
@@ -47,7 +48,9 @@ const Auth = () => {
       } else {
         navigate("/");
       }
-    } else {
+    }
+    //Signin
+    else {
       const data = await dispatch(signin(formData));
       if (data.payload !== undefined) {
         navigate("/");
@@ -83,8 +86,8 @@ const Auth = () => {
     });
   });
 
-  const googleSuccess = (res) => {
-    // console.log("Response", res);
+  //TODO: signup with google should be added inside our database.
+  const googleSuccess = async (res) => {
     const { profileObj, tokenId } = res;
     const data = {
       result: profileObj,
@@ -92,6 +95,8 @@ const Auth = () => {
     };
     try {
       dispatch(authActions.auth(data));
+      // const googleSignup = await dispatch(signup(data));
+      // console.log("googleSignup", googleSignup);
       navigate("/");
     } catch (error) {
       console.log(error);

@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/users.js";
 import Chat from "../models/chatModel.js";
 
-//For get all users and we get searched user as well from this api
+//For get all users and we can get searched user as well from this api
 export const getAllUsers = asyncHandler(async (req, res) => {
   //$or is like || for check the both condition like we apply onto the whole users database to find the user
   const keyword = req.query.search
@@ -14,7 +14,7 @@ export const getAllUsers = asyncHandler(async (req, res) => {
         ],
       }
     : {};
-  const users = await User.find(keyword).find({ id: { $ne: req.userId } });
+  const users = await User.find(keyword).find({ _id: { $ne: req.userId } });
   res.send(users);
 });
 
@@ -42,7 +42,6 @@ export const accessChat = asyncHandler(async (req, res) => {
     select: "name email",
   });
 
-  console.log("isChat", isChat);
   //If the chat exist it will return the chat
   if (isChat.length > 0) {
     res.send(isChat[0]);
