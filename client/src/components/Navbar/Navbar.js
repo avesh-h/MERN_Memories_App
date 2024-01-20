@@ -90,7 +90,7 @@ const Navbar = () => {
           <Button
             component={Link}
             variant="contained"
-            to="/auth"
+            to="/auth?auth=signin"
             color="primary"
           >
             Sign In

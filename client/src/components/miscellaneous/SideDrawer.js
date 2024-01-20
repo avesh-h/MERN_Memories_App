@@ -3,27 +3,19 @@ import {
   Box,
   Button,
   Divider,
-  Drawer,
   Menu,
   MenuItem,
-  MenuList,
-  Tooltip,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
-import SearchIcon from "@mui/icons-material/Search";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
-import { useNavigate } from "react-router-dom";
 import SearchDrawer from "./SearchDrawer";
 
 const SideDrawer = () => {
-  const [search, setSearch] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loadingChat, setLoadingChat] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const { user } = ChatState();
   const open = Boolean(anchorEl);

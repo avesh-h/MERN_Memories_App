@@ -1,25 +1,23 @@
-import React, { useState } from "react";
-import useStyle from "./styles";
-import { useNavigate } from "react-router-dom";
 import {
-  Container,
   Avatar,
   Button,
-  Paper,
+  Container,
   Grid,
+  Paper,
   Typography,
-  TextField,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Input from "./common/Input";
-import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
-import Icon from "./icon";
+import React, { useState } from "react";
+import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth";
-import { signin, signup } from "../../store/auth";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { authActions, signin, signup } from "../../store/auth";
+import Input from "./common/Input";
+import Icon from "./icon";
+import useStyle from "./styles";
 
 const initialState = {
   firstName: "",
@@ -36,7 +34,7 @@ const Auth = () => {
   const [formData, setFormData] = useState(initialState);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("profile"));
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,16 +44,17 @@ const Auth = () => {
       if (typeof data.payload === "string") {
         toast.error(data.payload, { position: "top-center" });
       } else {
-        navigate("/");
+        toast.success("Please verify your email");
+        setFormData(initialState);
       }
     }
     //Signin
     else {
       const data = await dispatch(signin(formData));
-      if (data.payload !== undefined) {
+      if (data.payload && typeof data.payload !== "string") {
         navigate("/");
       } else {
-        toast.error("Invalid Credentials!", { position: "top-center" });
+        toast.error(data.payload, { position: "top-center" });
       }
     }
   };
@@ -72,7 +71,13 @@ const Auth = () => {
     setShowPassword(!showPassword);
   };
 
+  //Switch Auth form (signup/signin)
   const switchMode = () => {
+    if (!isSignup && searchParams.get("auth")) {
+      setSearchParams({});
+    } else {
+      setSearchParams({ auth: "signin" });
+    }
     setIsSignup(!isSignup);
     setShowPassword(false);
   };
@@ -86,25 +91,32 @@ const Auth = () => {
     });
   });
 
-  //TODO: signup with google should be added inside our database.
+  //TODO: signup with google should be added inside our database.(same function signup/signin)
   const googleSuccess = async (res) => {
-    const { profileObj, tokenId } = res;
-    const data = {
-      result: profileObj,
-      tokenId,
-    };
+    const { profileObj, googleId } = res;
     try {
-      dispatch(authActions.auth(data));
-      // const googleSignup = await dispatch(signup(data));
-      // console.log("googleSignup", googleSignup);
-      navigate("/");
+      const payload = {
+        googleId,
+        ...profileObj,
+      };
+      if (!isSignup) {
+        const response = await dispatch(signin(payload));
+        if (response.payload && typeof response.payload !== "string") {
+          navigate("/");
+        } else {
+          toast.error(response.payload, { position: "top-center" });
+        }
+      } else {
+        //Need to add feature signup with google
+        console.log("data", data);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   const googleFailure = (error) => {
-    console.log(error);
+    console.error(error);
     console.error("User's registration is failed");
   };
 
@@ -126,12 +138,14 @@ const Auth = () => {
                   handleChange={handleChange}
                   autoFocus
                   half
+                  value={formData?.firstName}
                 />
                 <Input
                   name="lastName"
                   label="Last Name"
                   handleChange={handleChange}
                   half
+                  value={formData?.lastName}
                 />
               </>
             )}
@@ -141,6 +155,7 @@ const Auth = () => {
               label="Email Address"
               handleChange={handleChange}
               type="email"
+              value={formData?.email}
             />
             <Input
               name="password"
@@ -148,6 +163,7 @@ const Auth = () => {
               handleChange={handleChange}
               type={showPassword ? "text" : "password"}
               handleShowPassword={handleShowPassword}
+              value={formData?.password}
             />
             {isSignup && (
               <Input
@@ -155,6 +171,7 @@ const Auth = () => {
                 handleChange={handleChange}
                 label="Re-type Password"
                 type={"password"}
+                value={formData?.confirmPassword}
               />
             )}
             <Button
@@ -166,24 +183,26 @@ const Auth = () => {
             >
               {isSignup ? "Sign Up" : "Sign In"}
             </Button>
-            <GoogleLogin
-              clientId="276320922714-ls8q6jdh2rbfc8qe3ck81d9a8096q5mm.apps.googleusercontent.com"
-              render={(renderProps) => (
-                <Button
-                  className={classes.googleButton}
-                  color="primary"
-                  fullWidth
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                  startIcon={<Icon />}
-                  variant="contained"
-                >
-                  Google Sign In
-                </Button>
-              )}
-              onSuccess={googleSuccess}
-              onFailure={googleFailure}
-            />
+            {!isSignup && (
+              <GoogleLogin
+                clientId={process.env.REACT_APP_CLIENT_ID}
+                render={(renderProps) => (
+                  <Button
+                    className={classes.googleButton}
+                    color="primary"
+                    fullWidth
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                    startIcon={<Icon />}
+                    variant="contained"
+                  >
+                    Google Sign In
+                  </Button>
+                )}
+                onSuccess={googleSuccess}
+                onFailure={googleFailure}
+              />
+            )}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Button onClick={switchMode}>

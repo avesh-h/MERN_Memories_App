@@ -1,24 +1,15 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import SearchIcon from "@mui/icons-material/Search";
 import { TextField, Typography } from "@material-ui/core";
-import { toast, ToastContainer } from "react-toastify";
-import { ChatState } from "../../Context/ChatProvider";
-import axios from "axios";
-import ChatLoading from "../Chat/ChatLoading";
-import { searchUser, createChat } from "../../api/index";
-import UserListItem from "../UserAvatar/UserListItem";
+import SearchIcon from "@mui/icons-material/Search";
 import { CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Drawer from "@mui/material/Drawer";
+import * as React from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { ChatState } from "../../Context/ChatProvider";
+import { createChat, searchUser } from "../../api/index";
+import ChatLoading from "../Chat/ChatLoading";
+import UserListItem from "../UserAvatar/UserListItem";
 
 export default function TemporaryDrawer() {
   const [search, setSearch] = React.useState("");
@@ -28,7 +19,7 @@ export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
     left: false,
   });
-  const { user, setSelectedChat, Chats, setChats } = ChatState();
+  const { user, setSelectedChat, chats, setChats } = ChatState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -41,8 +32,10 @@ export default function TemporaryDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
-  // const closeDrawer = () => toggleDrawer("left", false);
+  //Close Drawer
+  const closeDrawer = () => toggleDrawer("left", false);
 
+  //handler Search functionality
   const handleSearch = async (e) => {
     if (!search) {
       toast.error("Please add some Input", {
@@ -55,23 +48,24 @@ export default function TemporaryDrawer() {
         progress: undefined,
         theme: "light",
       });
-    }
-    try {
-      setLoading(true);
-      const { data } = await searchUser(search);
-      setLoading(false);
-      setSearchResult(data);
-    } catch (error) {
-      toast.error("Failed To Load Search Result!", {
-        position: "top-left",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    } else {
+      try {
+        setLoading(true);
+        const { data } = await searchUser(search);
+        setLoading(false);
+        setSearchResult(data);
+      } catch (error) {
+        toast.error("Failed To Load Search Result!", {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     }
   };
 
@@ -80,9 +74,11 @@ export default function TemporaryDrawer() {
     try {
       setLoadingChat(true);
       const { data } = await createChat(userId);
+      //append with old chat
+      if (!chats?.find((c) => c._id === data._id)) setChats([data, ...chats]);
       setSelectedChat(data);
       setLoadingChat(false);
-      toggleDrawer("left", false);
+      closeDrawer();
     } catch (error) {
       toast.error(error.message, {
         position: "top-left",
@@ -148,31 +144,6 @@ export default function TemporaryDrawer() {
           {loadingChat && <CircularProgress />}
         </Box>
       </Box>
-      {/* <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
     </Box>
   );
 

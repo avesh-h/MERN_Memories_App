@@ -25,6 +25,9 @@ export const accessChat = asyncHandler(async (req, res) => {
     console.log("User Id param is not send with request");
     res.sendStatus(400);
   }
+  //req.userId is wrong because it is google ID if user sign in with google account
+  console.log("req", req.userId);
+  console.log("body", userId);
   var isChat = await Chat.find({
     //$and operator is like && operator that needs to be both condition true in this case we find the both user like user who loggedin and other user for finding previous chat is present or not
     isGroupChat: false,

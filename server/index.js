@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import allowCors from "./allowCors.js";
+import { init } from "./socket.js";
 
 const app = express();
 
@@ -55,9 +56,20 @@ const PORT = process.env.PORT || 8000;
 
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() =>
-    app.listen(PORT, () => console.log("Server is now live on port:8000"))
-  )
+  .then(() => {
+    //SOCKET CONNECTION
+    const server = app.listen(PORT, () =>
+      console.log("Server is now live on port:8000")
+    );
+    //We use current server to the websocket because we want to run http server and websocket server onto the same port(8000).
+    //INITIALIZE SOCKET
+    const io = init(server);
+
+    //WHEN ANY USER CONNECT TO SOCKET
+    io.on("connection", (socket) => {
+      console.log("socket is connected!");
+    });
+  })
   .catch((err) => console.log(err.message));
 
 // mongoose.set("strictQuery", true);

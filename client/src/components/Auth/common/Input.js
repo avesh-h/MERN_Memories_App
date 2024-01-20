@@ -11,6 +11,7 @@ const Input = ({
   autoFocus,
   handleChange,
   handleShowPassword,
+  ...other
 }) => {
   return (
     <Grid item xs={12} sm={half ? 6 : 12}>
@@ -36,6 +37,7 @@ const Input = ({
               }
             : null
         }
+        {...other}
       />
     </Grid>
   );

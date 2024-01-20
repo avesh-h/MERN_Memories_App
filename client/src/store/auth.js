@@ -7,6 +7,7 @@ export const signup = createAsyncThunk("auth/signup", async (formData) => {
     const { data } = await api.signUp(formData);
     return data;
   } catch (error) {
+    //TODO : need improve here or change response from the backend
     return error.response.data.message;
   }
 });
@@ -16,7 +17,8 @@ export const signin = createAsyncThunk("auth/signin", async (formData) => {
     const { data } = await api.signIn(formData);
     return data;
   } catch (error) {
-    console.log(error);
+    //TODO : need improve here or change response from the backend
+    return error.response.data.message;
   }
 });
 
@@ -38,36 +40,32 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(signin.fulfilled, (state, action) => {
-        state.authData = action.payload;
-        if (action.payload !== undefined) {
-          localStorage.setItem(
-            "profile",
-            JSON.stringify({ ...action?.payload })
-          );
-          state.userExist = !state.userExist;
-          return state;
-        } else {
-          return state;
-        }
-      })
-      .addCase(signup.fulfilled, (state, action) => {
-        state.authData = action.payload;
-        if (
-          action.payload !== undefined &&
-          typeof action.payload !== "string"
-        ) {
-          localStorage.setItem(
-            "profile",
-            JSON.stringify({ ...action?.payload })
-          );
-          state.userExist = !state.userExist;
-          return state;
-        } else {
-          return state;
-        }
-      });
+    builder.addCase(signin.fulfilled, (state, action) => {
+      state.authData = action.payload;
+      //TODO:Improve response from the backend or improve code here
+      if (action.payload && typeof action.payload !== "string") {
+        localStorage.setItem("profile", JSON.stringify({ ...action?.payload }));
+        state.userExist = !state.userExist;
+      }
+      return state;
+    });
+    //WE don't want to logged in user on just only signup
+    // .addCase(signup.fulfilled, (state, action) => {
+    //   state.authData = action.payload;
+    //   if (
+    //     action.payload !== undefined &&
+    //     typeof action.payload !== "string"
+    //   ) {
+    //     localStorage.setItem(
+    //       "profile",
+    //       JSON.stringify({ ...action?.payload })
+    //     );
+    //     state.userExist = !state.userExist;
+    //     return state;
+    //   } else {
+    //     return state;
+    //   }
+    // });
   },
 });
 

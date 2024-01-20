@@ -13,9 +13,13 @@ const userSchema = mongoose.Schema({
     type: String,
     require: true,
   },
-  id: {
-    type: String,
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
+  // id: {
+  //   type: String,
+  // },
 });
 
 export default mongoose.model("User", userSchema);
