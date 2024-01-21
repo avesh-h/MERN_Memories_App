@@ -39,7 +39,7 @@ export const signin = async (req, res) => {
         );
         const verification = {
           email,
-          verificationLink: `http://localhost:${process.env.PORT}/user/verification?email=${email}&token=${verificationToken}`,
+          verificationLink: `${process.env.LIVE_URL}/user/verification?email=${email}&token=${verificationToken}`,
           message: "Please verify your email",
         };
         //Send email for email verification
