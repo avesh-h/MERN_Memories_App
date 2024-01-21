@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
-import useStyle from "./styles";
-import { Typography, TextField, Paper, Button } from "@material-ui/core";
+import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import FileBase64 from "react-file-base64";
-import { createPost, updatePost } from "../../store/posts";
 import { useDispatch, useSelector } from "react-redux";
-import { postActions } from "../../store/posts";
-import { useNavigate } from "react-router-dom";
+import { createPost, updatePost } from "../../store/posts";
+import useStyle from "./styles";
 
 const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyle();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile"));
   const [postData, setPostData] = useState({

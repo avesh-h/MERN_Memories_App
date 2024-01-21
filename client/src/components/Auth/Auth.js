@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { authActions, signin, signup } from "../../store/auth";
+import { signin, signup } from "../../store/auth";
 import Input from "./common/Input";
 import Icon from "./icon";
 import useStyle from "./styles";
@@ -108,7 +108,6 @@ const Auth = () => {
         }
       } else {
         //Need to add feature signup with google
-        console.log("data", data);
       }
     } catch (error) {
       console.log(error);
