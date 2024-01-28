@@ -1,14 +1,14 @@
 import axios from "axios";
 
 //for Live project
-const API = axios.create({
-  baseURL: process.env.REACT_APP_MY_LIVE_URL,
-});
+// const API = axios.create({
+//   baseURL: process.env.REACT_APP_MY_LIVE_URL,
+// });
 
 //For local
-// const API = axios.create({
-//   baseURL: process.env.REACT_APP_MY_LOCAL_URL,
-// });
+const API = axios.create({
+  baseURL: process.env.REACT_APP_MY_LOCAL_URL,
+});
 
 //to check the token of user is present in localstorage or not and this interceptors callback is going to excuted before sending the request to the backend and set token to the request header so in backend middleware function can check the user is authorized or not
 
@@ -107,5 +107,28 @@ export const createChat = async (userId) => {
 
 export const fetchChats = async () => {
   const data = await API.get(`/chat`);
+  return data;
+};
+
+//Chat
+export const addGroupMember = async (group) => {
+  //For create the group for first time
+  const data = await API.post("/chat/group", group);
+  return data;
+};
+
+export const renameGroup = async (group) => {
+  const data = await API.put("/chat/rename", group);
+  return data;
+};
+
+export const removeMemberFromGroup = async (id) => {
+  const data = await API.put("/chat/groupremove", id);
+  return data;
+};
+
+export const addToGroup = async (group) => {
+  //Add grp member in the existing grp
+  const data = await API.put("/chat/groupadd", group);
   return data;
 };

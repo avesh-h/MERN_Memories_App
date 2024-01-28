@@ -51,13 +51,13 @@ const ProfileModal = ({ children, user, setAnchorEl }) => {
           </Typography>
           <Box>
             <img
-              src={user.result.imageUrl}
-              alt={user.result.name}
+              src={user?.result?.imageUrl}
+              alt={user?.result?.name}
               style={{ width: "100px", height: "100px", borderRadius: "50%" }}
             />
           </Box>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {user.result.email}
+            {user?.result?.email}
           </Typography>
         </Box>
       </Modal>
