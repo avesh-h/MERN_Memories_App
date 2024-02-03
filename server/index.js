@@ -9,6 +9,7 @@ import chatRoutes from "./routes/chatRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 import allowCors from "./allowCors.js";
 import { init } from "./socket.js";
+import path from "path";
 
 const app = express();
 
@@ -49,6 +50,27 @@ app.use("/message", messageRoutes);
 // app.listen(5000);
 
 dotenv.config();
+
+// ------------------------------Deployement code---------------------------------------------
+const __dirname1 = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  //Here we connect our current directory of backend with build of fron-end
+  app.use(express.static(path.join(__dirname1, "..", "client", "build")));
+
+  //Here we get all the content of index.html of build folder
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(__dirname1, "..", "client", "build", "index.html")
+    );
+  });
+} else {
+  app.get("/", (req, res) => {
+    console.log("API is running...");
+  });
+}
+
+// ---------------------------------------------------------------------------------------------
 
 const CONNECTION_URL = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@cluster0.kqjiqcg.mongodb.net/?retryWrites=true&w=majority`;
 
