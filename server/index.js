@@ -68,6 +68,45 @@ mongoose
     //WHEN ANY USER CONNECT TO SOCKET
     io.on("connection", (socket) => {
       console.log("socket is connected!");
+
+      //We want whenever user is connect it should be connect to his own personal socket.
+      socket.on("setup", (userData) => {
+        //Create room for the logged in user and other user that we want to chat with.
+        socket.join(userData?.result?._id);
+        socket.emit("connected");
+      });
+
+      //For join the room
+      socket.on("join chat", (room) => {
+        socket.join(room);
+        console.log("user join room " + room);
+      });
+
+      //For typing
+
+      //Here we create socket for typing in which we will recieve room and inside that room we will emit typing event for all the users except one that typing now.
+      socket.on("typing", (room) => socket.in(room).emit("typing"));
+
+      socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
+      //Send message
+      socket.on("new message", (newMessageRecieved) => {
+        var chat = newMessageRecieved.chat;
+        if (!chat.users) return console.log("chat.users not defined");
+        console.log(chat.users);
+        //We want to send message to the other users except sender
+        chat.users.forEach((user) => {
+          if (user._id === newMessageRecieved.sender._id) return;
+
+          socket.in(user._id).emit("message recieved", newMessageRecieved);
+        });
+      });
+    });
+
+    //For disconnect the socket.
+    socket.off("setup", () => {
+      console.log("USER DISCONNECTED!");
+      socket.leave(userData?.result?._id);
     });
   })
   .catch((err) => console.log(err.message));

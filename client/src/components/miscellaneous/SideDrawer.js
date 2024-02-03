@@ -14,10 +14,15 @@ import { useNavigate } from "react-router-dom";
 import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
 import SearchDrawer from "./SearchDrawer";
+import { getSender } from "../../utils/ChatLogics";
+import NotificationBadge from "react-notification-badge";
+import { Effect } from "react-notification-badge";
 
 const SideDrawer = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { user } = ChatState();
+  const { user, notification, setNotification, setSelectedChat } = ChatState();
+
+  //Drawer
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
@@ -26,6 +31,15 @@ const SideDrawer = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  //Notification menu
+  const [openNotification, setOpenNotification] = useState(null);
+  const handleOpenNotification = (event) => {
+    setOpenNotification(event.currentTarget);
+  };
+  const handleCloseNotification = () => {
+    setOpenNotification(null);
   };
 
   //Search Drawer
@@ -71,9 +85,47 @@ const SideDrawer = () => {
           Chats
         </Typography>
         <Box>
-          <Button>
+          {/* Notification  */}
+          <Button onClick={handleOpenNotification}>
+            <NotificationBadge
+              count={notification?.length}
+              effect={Effect?.SCALE}
+            />
             <NotificationsIcon />
           </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={openNotification}
+            open={openNotification}
+            onClose={handleCloseNotification}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            {!notification?.length ? (
+              <>{"No message received!"}</>
+            ) : (
+              <>
+                {notification.map((notf) => (
+                  <MenuItem
+                    key={notf?._id}
+                    onClick={() => {
+                      setSelectedChat(notf.chat);
+                      setNotification(notification.filter((n) => n !== notf));
+                      handleCloseNotification();
+                    }}
+                  >
+                    {notf?.chat?.isGroupChat
+                      ? `New message in ${notf.chat.chatName}`
+                      : `New message from ${getSender(
+                          user,
+                          notf?.chat?.users
+                        )}`}
+                  </MenuItem>
+                ))}
+              </>
+            )}
+          </Menu>
           <Button
             id="basic-button"
             aria-controls={open ? "basic-menu" : undefined}

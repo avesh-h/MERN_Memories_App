@@ -8,27 +8,14 @@ import {
   Routes,
   Route,
   Navigate,
-  useLocation,
 } from "react-router-dom";
 import Auth from "./components/Auth/Auth";
 import PostDetails from "./components/PostDetails/PostDetails";
 import ChatPage from "./components/Chat/ChatPage";
 import { ChatProvider, ChatState } from "./Context/ChatProvider";
-// import { io } from "socket.io-client";
-
-// const ENDPOINT = process.env.REACT_APP_MY_LOCAL_URL;
 
 const App = () => {
-  // const user = JSON.parse(localStorage.getItem("profile")) ;
   const { user } = ChatState();
-  // useEffect(() => {
-  //   const user = JSON.parse(localStorage.getItem("profile"));
-  //   console.log("user", user);
-  // }, [window.location.href]);
-
-  // useEffect(() => {
-  //   let socket = io(ENDPOINT);
-  // }, []);
   return (
     // <Router>
     <Container maxWidth="lg">

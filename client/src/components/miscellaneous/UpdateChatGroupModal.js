@@ -33,7 +33,11 @@ const style = {
   p: 4,
 };
 
-const UpdateChatGroupModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateChatGroupModal = ({
+  fetchAgain,
+  setFetchAgain,
+  fetchMessageHandler,
+}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -74,6 +78,8 @@ const UpdateChatGroupModal = ({ fetchAgain, setFetchAgain }) => {
         ? setSelectedChat()
         : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
+      //Fetch messages again after removing someone from grp
+      fetchMessageHandler();
       setLoading(false);
     } catch (error) {
       toast.error({
