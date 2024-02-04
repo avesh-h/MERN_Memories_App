@@ -97,9 +97,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setMessages([...messages, newMessageRecieved]);
       }
     });
-  });
-
-  console.log("------->", notification);
+    return () => {
+      socket.off("message recieved");
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, messages]);
 
   //Send message
   const sendMessageHandler = async (event) => {
